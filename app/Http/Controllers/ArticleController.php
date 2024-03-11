@@ -21,17 +21,23 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $article = new Article([
-            'designation' => $request->input('designation'),
-            'marque' => $request->input('marque'),
-            'reference' => $request->input('reference'),
-            'qtestock' => $request->input('qtestock'),
-            'prix' => $request->input('prix'),
-            'imageart' => $request->input('imageart'),
-            'scategorieID' => $request->input('scategorieID')
-        ]);
-        $article->save();
-        return response()->json($article, 200);
+        try {
+            $article = new Article([
+                'designation' => $request->input('designation'),
+                'marque' => $request->input('marque'),
+                'reference' => $request->input('reference'),
+                'qtestock' => $request->input('qtestock'),
+                'prix' => $request->input('prix'),
+                'imageart' => $request->input('imageart'),
+                'scategorieID' => $request->input('scategorieID')
+            ]);
+
+            $article->save();
+
+            return response()->json($article, 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Erreur lors de l\'enregistrement de l\'article.', 'error' => $e->getMessage()], 500);
+        }
     }
 
     /**
